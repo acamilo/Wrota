@@ -10,6 +10,9 @@
 world_world *root;
 int idSingleton = 0;
 
+// turbo ugly.
+const char *world_type_strings[] = {"Black Hole","Star","Planet","Moon"};
+
 // worlds form a tree. there is one root world at the base.
 // A world has children. firstChild points to the first in a doubly linked list
 // child worlds of a parent are a doubly linked list with a reference to thier parent
@@ -32,6 +35,7 @@ int worlds_init(){
 	
 	root->posx = 0.0;
 	root->posy = 0.0;
+	root->type = BlackHole;
 	strcpy(root->name,"Black Hole");
 	
 	return 0;
@@ -93,7 +97,7 @@ void worlds_addWorldTo(world_world *parent, world_world *child){
 }
 
 void worlds_printWorld(world_world *world){
-	printf("\n World #%d ['%s']\n", world->ID,world->name);
+	printf("\n World #%d (%s)['%s']\n", world->ID,world_type_strings[world->type],world->name);
 	printf("\tLy x: \t%f\n",world->posx);
 	printf("\tLy y: \t%f\n",world->posy);
 	
@@ -121,7 +125,9 @@ void worlds_printWorld(world_world *world){
 
 void worlds_dumpWorlds(world_world *in,int lvl){
 	for(int i=0; i<=lvl; i++) printf("\t");
-	printf("[%d] %s\n",lvl,in->name);
+	printf("World #%d (%s)['%s']\n", in->ID,world_type_strings[in->type],in->name);
+	
+	//worlds_printWorld(in);
 	world_world *ch = in->firstChild;
 	if (ch==0) return;
 	lvl++;
@@ -175,7 +181,9 @@ void worlds_worldTest(){
 		world_world *x = worlds_initWorld(0);
 		x->posx = normFloatRand();
 		x->posy = normFloatRand();
+		x->type = Star;
 		sprintf(x->name,"GUC%d-A",x->ID);
+		
 		
 		worlds_addWorldTo(0,x);
 		printf ("[world]\t'%s' has been born!\n",x->name);
@@ -191,6 +199,7 @@ void worlds_worldTest(){
 			world_world *c = worlds_initWorld(0);
 			c->posx = normFloatRand();
 			c->posy = normFloatRand();
+			c->type = Star;
 			sprintf(c->name,"GUC%d-B",x->ID);
 			worlds_addWorldTo(x,c);
 			
@@ -208,6 +217,7 @@ void worlds_worldTest(){
 				world_world *pl = worlds_initWorld(0);
 				pl->posx = normFloatRand();
 				pl->posy = normFloatRand();
+				pl->type = Planet;
 				sprintf(pl->name,"GUC%d-A%c",x->ID,'a'+j);
 				printf("\t\tNew planet '%s'\n",pl->name);
 				worlds_addWorldTo(x,pl);

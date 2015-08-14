@@ -1,5 +1,7 @@
-#include "worlds.h"
+#ifndef STARS_H
+#define STARS_H
 
+#include "worlds.h"
 /*
  IA+	Extreamly Luminous Super-Giant
  IA		Luminous Super-Giant
@@ -41,3 +43,5 @@ struct star_star{
 	double 					mass;
 	
 };
+
+#endif

@@ -1,4 +1,8 @@
-typedef enum {BlackHole=0,Star,Planet,Moon} world_type;
+#ifndef WORLDS_H
+#define WORLDS_H
+
+typedef enum {BlackHole=0,Star=1,Planet=2,Moon=3} world_type;
+
 
 typedef struct world_world world_world;
 
@@ -39,3 +43,7 @@ world_world *worlds_initWorld(world_world *in);
 
 
 void worlds_worldTest(void);
+
+
+
+#endif
