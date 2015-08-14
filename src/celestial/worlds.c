@@ -124,8 +124,10 @@ void worlds_printWorld(world_world *world){
 }
 
 void worlds_dumpWorlds(world_world *in,int lvl){
+	if (in->parent) if(in->type == Star && in->parent->type == BlackHole) printf("\n");
 	for(int i=0; i<=lvl; i++) printf("\t");
 	printf("World #%d (%s)['%s']\n", in->ID,world_type_strings[in->type],in->name);
+
 	
 	//worlds_printWorld(in);
 	world_world *ch = in->firstChild;
@@ -221,6 +223,18 @@ void worlds_worldTest(){
 				sprintf(pl->name,"GUC%d-A%c",x->ID,'a'+j);
 				printf("\t\tNew planet '%s'\n",pl->name);
 				worlds_addWorldTo(x,pl);
+				if (normFloatRand()>0.2){
+					int numMoons = normFloatRand()*0.3*10;
+					for (int k=0;k<numMoons;k++){
+						world_world *moon = worlds_initWorld(0);
+						moon->posx = normFloatRand();
+						moon->posy = normFloatRand();
+						moon->type = Moon;
+						sprintf(moon->name,"GUC%d-A%c%d",x->ID,'a'+j,k);
+						worlds_addWorldTo(pl,moon);
+					}
+				}
+
 			}
 			continue;
 		}
