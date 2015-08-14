@@ -1,3 +1,5 @@
+typedef enum {BlackHole=0,Star,Planet,Moon} world_type;
+
 typedef struct world_world world_world;
 
 struct world_world {
@@ -8,7 +10,7 @@ struct world_world {
 	double posx;
 	double posy;
 	
-	// unieqie ID
+	// unique ID
 	int ID;
 	
 	// Tree, Double linked list pointers
@@ -19,7 +21,12 @@ struct world_world {
 	
 	// number of children "cache"
 	int numChildren;
+	
+	// body type
+	world_type type;
 };
+
+
 
 int worlds_init();
 
