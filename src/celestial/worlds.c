@@ -7,7 +7,7 @@
 #include <string.h>
 
 
-world *root;
+world_world *root;
 int idSingleton = 0;
 
 // worlds form a tree. there is one root world at the base.
@@ -15,11 +15,11 @@ int idSingleton = 0;
 // child worlds of a parent are a doubly linked list with a reference to thier parent
 // a wor
 
-world *worlds_getRoot(){
+world_world *worlds_getRoot(){
 	return root;
 }
 
-void worlds_addWorld(world *new){
+void worlds_addWorld(world_world *new){
 	worlds_addWorldTo(0, new);
 }
 
@@ -37,7 +37,7 @@ int worlds_init(){
 	return 0;
 }
 
-void worlds_addWorldTo(world *parent, world *child){
+void worlds_addWorldTo(world_world *parent, world_world *child){
 	
 	// No Parent? its on the top of the tree
 	if (parent==0) {
@@ -58,8 +58,8 @@ void worlds_addWorldTo(world *parent, world *child){
 			
 		}
 		// Child needs to be removed. linked list needs to be stitched.
-		world *prev = child->prev;
-		world *next = child->next;
+		world_world *prev = child->prev;
+		world_world *next = child->next;
 		
 		// make it an orphan
 		if (prev) prev->next=next;
@@ -80,7 +80,7 @@ void worlds_addWorldTo(world *parent, world *child){
 	}
 	
 	// Has Children. Must walk to end.
-	world *lastChild = parent->firstChild;
+	world_world *lastChild = parent->firstChild;
 	while(lastChild->next) lastChild = lastChild->next;
 	
 	// we're at the end. add new child.
@@ -92,7 +92,7 @@ void worlds_addWorldTo(world *parent, world *child){
 	
 }
 
-void worlds_printWorld(world *world){
+void worlds_printWorld(world_world *world){
 	printf("\n World #%d ['%s']\n", world->ID,world->name);
 	printf("\tLy x: \t%f\n",world->posx);
 	printf("\tLy y: \t%f\n",world->posy);
@@ -119,10 +119,10 @@ void worlds_printWorld(world *world){
 	
 }
 
-void worlds_dumpWorlds(world *in,int lvl){
+void worlds_dumpWorlds(world_world *in,int lvl){
 	for(int i=0; i<=lvl; i++) printf("\t");
 	printf("[%d] %s\n",lvl,in->name);
-	world *ch = in->firstChild;
+	world_world *ch = in->firstChild;
 	if (ch==0) return;
 	lvl++;
 	//worlds_dumpWorlds(ch);
@@ -134,9 +134,9 @@ void worlds_dumpWorlds(world *in,int lvl){
 
 
 
-world *worlds_initWorld(world *in){
+world_world *worlds_initWorld(world_world *in){
 	// If they've passed us a null pointer, MALLOC a new world.
-	if (in==0) in = (world*)malloc(sizeof(world));
+	if (in==0) in = (world_world*)malloc(sizeof(world_world));
 	
 	// malloc failed, pass null pointer up.
 	if (in==0) return in;
@@ -172,7 +172,7 @@ void worlds_worldTest(){
 		stars++;
 		printf("\n");
 		// make a new world
-		world *x = worlds_initWorld(0);
+		world_world *x = worlds_initWorld(0);
 		x->posx = normFloatRand();
 		x->posy = normFloatRand();
 		sprintf(x->name,"GUC%d-A",x->ID);
@@ -188,7 +188,7 @@ void worlds_worldTest(){
 		// Binary
 		if(normFloatRand()>0.6){
 			stars++;
-			world *c = worlds_initWorld(0);
+			world_world *c = worlds_initWorld(0);
 			c->posx = normFloatRand();
 			c->posy = normFloatRand();
 			sprintf(c->name,"GUC%d-B",x->ID);
@@ -205,7 +205,7 @@ void worlds_worldTest(){
 			
 			for (int j=0;j<numPlanets;j++){
 				planets++;
-				world *pl = worlds_initWorld(0);
+				world_world *pl = worlds_initWorld(0);
 				pl->posx = normFloatRand();
 				pl->posy = normFloatRand();
 				sprintf(pl->name,"GUC%d-A%c",x->ID,'a'+j);
@@ -220,13 +220,13 @@ void worlds_worldTest(){
 	
 	//worlds_dumpWorlds(worlds_getRoot(),0);
 /*
-	world *w = worlds_initWorld(0);
+	world_world *w = worlds_initWorld(0);
 	strcpy(w->name,"Delta Pavonis");
 	w->posx=1.5;
 	w->posy=4;
 	worlds_addWorldTo(0,w);
 	
-	world *x = worlds_initWorld(0);
+	world_world *x = worlds_initWorld(0);
 	strcpy(x->name,"Hadees");
 	x->posx=0.8;
 	x->posy=0.2;
