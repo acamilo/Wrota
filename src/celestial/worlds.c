@@ -170,15 +170,16 @@ world_world *worlds_initWorld(world_world *in){
 
 int stars = 0;
 int planets = 0;
+int moons = 0;
 
-void worlds_worldTest(){
+void worlds_worldTest(int stars){
 	srand(time(0));
 	
-	for (int i=0; i<100; i++) {
-		//printf("\033[2J\033[1;1H");
-		//printf("Stars:\t%d\nPlanets:\t%d\n",stars,planets);
+	for (int i=0; i<stars; i++) {
+		printf("\033[2J\033[1;1H");
+		printf("Stars:\t\t%d\nPlanets:\t%d\nMoons:\t\t%d\n",stars,planets,moons);
 		stars++;
-		printf("\n");
+		//printf("\n");
 		// make a new world
 		world_world *x = worlds_initWorld(0);
 		x->posx = normFloatRand();
@@ -188,10 +189,10 @@ void worlds_worldTest(){
 		
 		
 		worlds_addWorldTo(0,x);
-		printf ("[world]\t'%s' has been born!\n",x->name);
+		//printf ("[world]\t'%s' has been born!\n",x->name);
 		// Bachelor star?
 		if(normFloatRand()<0.1){
-			printf ("\t'%s' Is a Bachelor Star\n",x->name);
+			//printf ("\t'%s' Is a Bachelor Star\n",x->name);
 			continue; // aaaand we're done with this one
 		}
 		
@@ -205,13 +206,13 @@ void worlds_worldTest(){
 			sprintf(c->name,"GUC%d-B",x->ID);
 			worlds_addWorldTo(x,c);
 			
-			printf ("\t'%s' Is in a Binary Pair with it's smaller companion '%s' \n",x->name,c->name);
+			//printf ("\t'%s' Is in a Binary Pair with it's smaller companion '%s' \n",x->name,c->name);
 		}
 		
 		// Planets?
 		
 		if(normFloatRand()>0.6){
-			printf("\t'%s' has planets!\n",x->name);
+			//printf("\t'%s' has planets!\n",x->name);
 			int numPlanets = normFloatRand()*0.8*10;
 			
 			for (int j=0;j<numPlanets;j++){
@@ -221,11 +222,12 @@ void worlds_worldTest(){
 				pl->posy = normFloatRand();
 				pl->type = Planet;
 				sprintf(pl->name,"GUC%d-A%c",x->ID,'a'+j);
-				printf("\t\tNew planet '%s'\n",pl->name);
+				//printf("\t\tNew planet '%s'\n",pl->name);
 				worlds_addWorldTo(x,pl);
 				if (normFloatRand()>0.2){
 					int numMoons = normFloatRand()*0.3*10;
 					for (int k=0;k<numMoons;k++){
+						moons++;
 						world_world *moon = worlds_initWorld(0);
 						moon->posx = normFloatRand();
 						moon->posy = normFloatRand();

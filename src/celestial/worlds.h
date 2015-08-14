@@ -42,7 +42,7 @@ void worlds_printWorld(world_world *world);
 world_world *worlds_initWorld(world_world *in);
 
 
-void worlds_worldTest(void);
+void worlds_worldTest(int stars);
 
 
 
